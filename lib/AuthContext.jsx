@@ -17,6 +17,17 @@ export function AuthProvider({ children }) {
     const savedUser = localStorage.getItem('user');
     if (savedToken && savedUser) {
       try {
+        const parts = savedToken.split('.');
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1]));
+          if (payload.exp && payload.exp * 1000 < Date.now()) {
+            localStorage.clear();
+            setToken(null);
+            setUser(null);
+            setLoading(false);
+            return;
+          }
+        }
         setToken(savedToken);
         setUser(JSON.parse(savedUser));
       } catch (e) {

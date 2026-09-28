@@ -2,15 +2,51 @@ import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
 import Item from '@/models/Item';
 import { dataStore } from '@/lib/dataStore';
+import { getAuthUser } from '@/lib/auth';
+import { checkRateLimit } from '@/lib/rateLimit';
+import { sanitizeString } from '@/lib/sanitize';
 
 export async function POST(request) {
+  // Require authentication
+  const authUser = getAuthUser(request);
+  if (!authUser) {
+    return NextResponse.json(
+      { message: 'Unauthorized. Please log in to post an item.' },
+      { status: 401 }
+    );
+  }
+
+  // Rate limit: max 20 item posts per 15 minutes
+  const rateLimit = checkRateLimit(request, {
+    prefix: 'post_item',
+    maxRequests: 20,
+    windowMs: 15 * 60 * 1000,
+  });
+
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { message: `Too many submissions. Please wait ${rateLimit.resetIn} seconds before posting again.` },
+      { status: 429 }
+    );
+  }
+
   try {
     const formData = await request.formData();
-    const name = formData.get('name');
-    const description = formData.get('description');
-    const question = formData.get('question');
-    const type = formData.get('type') || 'Lost';
-    const createdBy = formData.get('createdBy') || 'user_demo_1';
+    const name = sanitizeString(formData.get('name'), 100);
+    const description = sanitizeString(formData.get('description'), 2000);
+    const question = sanitizeString(formData.get('question'), 200);
+    const rawType = sanitizeString(formData.get('type'), 10);
+    const type = rawType === 'Found' ? 'Found' : 'Lost';
+
+    if (!name || !description || !question) {
+      return NextResponse.json(
+        { message: 'Name, description, and security question are required.' },
+        { status: 400 }
+      );
+    }
+
+    // STRICT ACCESS CONTROL: Force createdBy to be the authenticated user's ID
+    const createdBy = authUser.userId;
 
     const fallbackPictures =
       type === 'Lost'
@@ -36,9 +72,7 @@ export async function POST(request) {
         _id: String(newItem._id),
       };
 
-      // Also add to dataStore cache
       dataStore.addItem(sanitized);
-
       return NextResponse.json({ message: 'Item created successfully', item: sanitized });
     }
 
@@ -53,7 +87,7 @@ export async function POST(request) {
 
     return NextResponse.json({ message: 'Item created successfully', item: newItem });
   } catch (error) {
-    console.error('postitem error:', error);
+    console.error('Secure postitem error:', error);
     return NextResponse.json({ message: 'Failed to create item' }, { status: 500 });
   }
 }

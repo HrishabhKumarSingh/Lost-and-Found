@@ -10,7 +10,7 @@ export default function ConfirmDialog({ open, onClose, onConfirm, title, message
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
       <div className="relative bg-white rounded-2xl shadow-xl p-6 max-w-sm w-full mx-4">
         <div className="flex items-center gap-3 mb-4">
-          <div className={`p-2 rounded-full ${danger ? 'bg-red-100' : 'bg-primary-100'}`}>
+          <div className={`p-2 rounded-lg ${danger ? 'bg-red-100' : 'bg-primary-100'}`}>
             <AlertTriangle className={`w-5 h-5 ${danger ? 'text-red-600' : 'text-primary-600'}`} />
           </div>
           <h3 className="text-lg font-semibold text-gray-900">{title}</h3>

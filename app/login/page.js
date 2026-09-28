@@ -33,47 +33,47 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-950 via-primary-900 to-primary-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-slate-900 px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4 shadow-sm">
             <Search className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-          <p className="text-primary-300 mt-1">Sign in to your account</p>
+          <h1 className="text-2xl font-bold text-white">Sign In</h1>
+          <p className="text-slate-400 text-sm mt-1">Access the Lost and Found Directory</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="Password"
+                  className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none p-0.5"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none p-0.5"
                   tabIndex={-1}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
@@ -85,7 +85,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+              className="w-full py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm text-sm"
             >
               {loading ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Signing in...</>
@@ -95,9 +95,9 @@ export default function LoginPage() {
             </button>
 
             <div className="relative flex items-center justify-center my-4">
-              <div className="border-t border-gray-200 w-full" />
-              <span className="bg-white px-3 text-xs text-gray-400 uppercase tracking-wider">or</span>
-              <div className="border-t border-gray-200 w-full" />
+              <div className="border-t border-slate-200 w-full" />
+              <span className="bg-white px-3 text-xs text-slate-400 uppercase tracking-wider">or</span>
+              <div className="border-t border-slate-200 w-full" />
             </div>
 
             <button
@@ -108,7 +108,7 @@ export default function LoginPage() {
                 setLoading(true);
                 try {
                   await login('demo@example.com', 'password123');
-                  addToast('Signed in as Demo User!', 'success');
+                  addToast('Signed in as Demo User', 'success');
                 } catch (err) {
                   addToast('Demo sign-in failed', 'error');
                 } finally {
@@ -116,16 +116,16 @@ export default function LoginPage() {
                 }
               }}
               disabled={loading}
-              className="w-full py-2.5 bg-primary-50 text-primary-700 font-medium text-sm rounded-xl hover:bg-primary-100 border border-primary-200 transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 bg-slate-50 text-slate-700 font-medium text-sm rounded-lg hover:bg-slate-100 border border-slate-200 transition-colors flex items-center justify-center gap-2"
             >
-              Quick Sign In with Demo Account
+              Sign In with Demo Account
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-6">
-            Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-primary-600 font-medium hover:underline">
-              Sign up
+          <p className="text-center text-sm text-slate-600 mt-6">
+            Do not have an account?{' '}
+            <Link href="/signup" className="text-blue-600 font-medium hover:underline">
+              Create an account
             </Link>
           </p>
         </div>

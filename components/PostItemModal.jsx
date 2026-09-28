@@ -172,8 +172,8 @@ export default function PostItemModal({ open, onClose }) {
           </div>
 
           {loading && progress > 0 && (
-            <div className="w-full bg-gray-100 rounded-full h-2">
-              <div className="bg-primary-600 h-2 rounded-full transition-all" style={{ width: `${progress}%` }} />
+            <div className="w-full bg-gray-100 rounded h-2">
+              <div className="bg-primary-600 h-2 rounded transition-all" style={{ width: `${progress}%` }} />
             </div>
           )}
 

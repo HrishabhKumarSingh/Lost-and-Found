@@ -1,109 +1,118 @@
 import Link from 'next/link';
-import { Search, UserPlus, ClipboardList, Bell } from 'lucide-react';
+import { Search, UserPlus, ClipboardList, ShieldCheck } from 'lucide-react';
 
 export default function Home() {
   const steps = [
     {
-      icon: <UserPlus className="w-8 h-8" />,
-      title: 'Create an Account',
-      description: 'Sign up in seconds and join the community.',
+      icon: <UserPlus className="w-6 h-6 text-blue-600" />,
+      title: '1. Create an Account',
+      description: 'Register with your verified email and contact number to report or claim belongings.',
       image: '/login-1.svg',
     },
     {
-      icon: <ClipboardList className="w-8 h-8" />,
-      title: 'List Lost / Found Item',
-      description: 'Post details about items you\'ve lost or found.',
+      icon: <ClipboardList className="w-6 h-6 text-blue-600" />,
+      title: '2. Post Details & Secret Question',
+      description: 'Describe the item and define a secret verification question that only the true owner would know.',
       image: '/list-item.svg',
     },
     {
-      icon: <Bell className="w-8 h-8" />,
-      title: 'Get Notified',
-      description: 'Receive updates when someone responds to your listing.',
+      icon: <ShieldCheck className="w-6 h-6 text-blue-600" />,
+      title: '3. Verify & Exchange Contact',
+      description: 'Review claim answers privately. Phone numbers are unlocked only after you approve a correct answer.',
       image: '/notification.svg',
     },
   ];
 
   return (
-    <div>
+    <div className="bg-white">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-950 via-primary-900 to-primary-800 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(99,102,241,0.3),transparent_50%)]" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-32">
+      <section className="bg-slate-900 text-white border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-28">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm text-primary-200 mb-6">
-                <Search className="w-4 h-4" />
-                Lost & Found System
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-md text-xs font-medium text-slate-300 mb-6">
+                <Search className="w-3.5 h-3.5 text-blue-400" />
+                Community Directory
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-                Lost it? <br />
-                <span className="text-primary-300">List it. Find it.</span>
+              <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6 leading-tight">
+                Community Lost and Found Directory
               </h1>
-              <p className="text-lg text-primary-200 mb-8 max-w-lg">
-                A simple platform to report lost items and help reunite people with their belongings through a secure verification system.
+              <p className="text-base md:text-lg text-slate-300 mb-8 max-w-xl leading-relaxed">
+                Report lost personal belongings, browse recovered items, and safely verify rightful ownership through private security questions before exchanging contact details.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3">
                 <Link
                   href="/signup"
-                  className="px-8 py-3 bg-white text-primary-900 font-semibold rounded-xl hover:bg-primary-50 transition-colors"
+                  className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
                 >
-                  Get Started
+                  Create an Account
                 </Link>
-                <a
-                  href="#how-it-works"
-                  className="px-8 py-3 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors"
+                <Link
+                  href="/feed"
+                  className="px-6 py-3 bg-slate-800 border border-slate-700 text-slate-200 text-sm font-medium rounded-lg hover:bg-slate-700 transition-colors"
                 >
-                  How it works
-                </a>
+                  Browse Directory
+                </Link>
               </div>
             </div>
-            <div className="relative z-10 hidden md:block">
-              <img src="/lost-2.svg" alt="Lost and Found" className="w-full max-w-md mx-auto drop-shadow-2xl" />
+            <div className="hidden md:block">
+              <div className="p-8 bg-slate-800/60 rounded-xl border border-slate-700/80">
+                <img src="/lost-2.svg" alt="Lost and Found System" className="w-full max-w-md mx-auto" />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* How it works */}
-      <section id="how-it-works" className="py-20 md:py-28 bg-white">
+      <section id="how-it-works" className="py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How it Works</h2>
-            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
-              Three simple steps to find what you&apos;ve lost or return what you&apos;ve found.
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">How the System Works</h2>
+            <p className="text-slate-600 text-sm md:text-base max-w-2xl mx-auto">
+              A structured three-step workflow designed to prevent fraudulent claims and protect user privacy.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {steps.map((step, i) => (
-              <div key={i} className="text-center group">
-                <div className="relative mb-6">
-                  <div className="w-16 h-16 bg-primary-100 text-primary-600 rounded-2xl flex items-center justify-center mx-auto group-hover:bg-primary-600 group-hover:text-white transition-colors duration-300">
+              <div key={i} className="bg-white rounded-xl border border-slate-200 p-6 flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center mb-4">
                     {step.icon}
                   </div>
-                  <span className="absolute -top-2 -right-2 w-8 h-8 bg-primary-600 text-white text-sm font-bold rounded-full flex items-center justify-center mx-auto" style={{ left: 'calc(50% + 20px)' }}>
-                    {i + 1}
-                  </span>
+                  <h3 className="text-base font-semibold text-slate-900 mb-2">{step.title}</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-6">{step.description}</p>
                 </div>
-                <img src={step.image} alt={step.title} className="w-48 h-36 object-contain mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{step.title}</h3>
-                <p className="text-gray-500">{step.description}</p>
+                <div className="pt-4 border-t border-slate-100">
+                  <img src={step.image} alt={step.title} className="w-full h-32 object-contain mx-auto" />
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-800">
+      {/* Direct CTA */}
+      <section className="py-16 bg-slate-900 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to get started?</h2>
-          <p className="text-primary-200 text-lg mb-8">Join the community and help reunite people with their lost belongings.</p>
-          <Link
-            href="/signup"
-            className="inline-block px-8 py-3 bg-white text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-colors"
-          >
-            Create an Account
-          </Link>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">Report or Search for an Item</h2>
+          <p className="text-slate-400 text-sm md:text-base mb-8 max-w-lg mx-auto">
+            Access the community feed to view reported items or submit a listing with verified security questions.
+          </p>
+          <div className="flex justify-center gap-4">
+            <Link
+              href="/signup"
+              className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Get Started
+            </Link>
+            <Link
+              href="/login"
+              className="px-6 py-3 bg-slate-800 border border-slate-700 text-slate-200 text-sm font-medium rounded-lg hover:bg-slate-700 transition-colors"
+            >
+              Sign In
+            </Link>
+          </div>
         </div>
       </section>
     </div>

@@ -49,21 +49,21 @@ export default function SignupPage() {
 
   const inputField = (label, field, type, icon, placeholder, toggleAction, isVisible) => (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
       <div className="relative">
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400">{icon}</div>
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400">{icon}</div>
         <input
           type={toggleAction ? (isVisible ? 'text' : 'password') : type}
           value={form[field]}
           onChange={update(field)}
           placeholder={placeholder}
-          className={`w-full pl-10 ${toggleAction ? 'pr-10' : 'pr-4'} py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`}
+          className={`w-full pl-10 ${toggleAction ? 'pr-10' : 'pr-4'} py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
         />
         {toggleAction && (
           <button
             type="button"
             onClick={toggleAction}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none p-0.5"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none p-0.5"
             tabIndex={-1}
             aria-label={isVisible ? 'Hide password' : 'Show password'}
           >
@@ -75,44 +75,44 @@ export default function SignupPage() {
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-950 via-primary-900 to-primary-800 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-slate-900 px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4 shadow-sm">
             <Search className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-white">Create an account</h1>
-          <p className="text-primary-300 mt-1">Join the Lost & Found community</p>
+          <h1 className="text-2xl font-bold text-white">Create an Account</h1>
+          <p className="text-slate-400 text-sm mt-1">Join the Lost and Found Directory</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-8">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               {inputField('First Name', 'firstname', 'text', <User className="w-4 h-4" />, 'John')}
               {inputField('Last Name', 'lastname', 'text', <User className="w-4 h-4" />, 'Doe')}
             </div>
-            {inputField('Email', 'email', 'email', <Mail className="w-4 h-4" />, 'you@example.com')}
-            {inputField('Phone Number', 'number', 'tel', <Phone className="w-4 h-4" />, '+91 9876543210')}
-            {inputField('Password', 'password', 'password', <Lock className="w-4 h-4" />, '••••••••', () => setShowPassword(!showPassword), showPassword)}
-            {inputField('Confirm Password', 'cpassword', 'password', <Lock className="w-4 h-4" />, '••••••••', () => setShowCPassword(!showCPassword), showCPassword)}
+            {inputField('Email Address', 'email', 'email', <Mail className="w-4 h-4" />, 'you@example.com')}
+            {inputField('Phone Number', 'number', 'tel', <Phone className="w-4 h-4" />, '+1 (555) 000-0000')}
+            {inputField('Password', 'password', 'password', <Lock className="w-4 h-4" />, 'Password', () => setShowPassword(!showPassword), showPassword)}
+            {inputField('Confirm Password', 'cpassword', 'password', <Lock className="w-4 h-4" />, 'Confirm Password', () => setShowCPassword(!showCPassword), showCPassword)}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-primary-600 text-white font-medium rounded-xl hover:bg-primary-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 shadow-sm text-sm"
             >
               {loading ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Creating account...</>
               ) : (
-                'Sign up'
+                'Create Account'
               )}
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-6">
+          <p className="text-center text-sm text-slate-600 mt-6">
             Already have an account?{' '}
-            <Link href="/login" className="text-primary-600 font-medium hover:underline">
-              Log in
+            <Link href="/login" className="text-blue-600 font-medium hover:underline">
+              Sign in
             </Link>
           </p>
         </div>

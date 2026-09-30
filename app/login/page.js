@@ -93,33 +93,6 @@ export default function LoginPage() {
                 'Sign in'
               )}
             </button>
-
-            <div className="relative flex items-center justify-center my-4">
-              <div className="border-t border-slate-200 w-full" />
-              <span className="bg-white px-3 text-xs text-slate-400 uppercase tracking-wider">or</span>
-              <div className="border-t border-slate-200 w-full" />
-            </div>
-
-            <button
-              type="button"
-              onClick={async () => {
-                setEmail('demo@example.com');
-                setPassword('password123');
-                setLoading(true);
-                try {
-                  await login('demo@example.com', 'password123');
-                  addToast('Signed in as Demo User', 'success');
-                } catch (err) {
-                  addToast('Demo sign-in failed', 'error');
-                } finally {
-                  setLoading(false);
-                }
-              }}
-              disabled={loading}
-              className="w-full py-2.5 bg-slate-50 text-slate-700 font-medium text-sm rounded-lg hover:bg-slate-100 border border-slate-200 transition-colors flex items-center justify-center gap-2"
-            >
-              Sign In with Demo Account
-            </button>
           </form>
 
           <p className="text-center text-sm text-slate-600 mt-6">

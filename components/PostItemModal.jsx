@@ -21,10 +21,47 @@ export default function PostItemModal({ open, onClose }) {
 
   const handleFiles = (e) => {
     const files = Array.from(e.target.files);
-    setImages((prev) => [...prev, ...files]);
     files.forEach((file) => {
+      if (!file.type.startsWith('image/')) return;
       const reader = new FileReader();
-      reader.onload = (ev) => setPreviews((prev) => [...prev, ev.target.result]);
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 1200;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+          setPreviews((prev) => [...prev, compressedDataUrl]);
+
+          fetch(compressedDataUrl)
+            .then((res) => res.blob())
+            .then((blob) => {
+              const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, '') + '.jpg', {
+                type: 'image/jpeg',
+              });
+              setImages((prev) => [...prev, compressedFile]);
+            })
+            .catch(() => {
+              setImages((prev) => [...prev, file]);
+            });
+        };
+        img.src = ev.target.result;
+      };
       reader.readAsDataURL(file);
     });
   };
@@ -74,6 +111,7 @@ export default function PostItemModal({ open, onClose }) {
   const resetForm = () => {
     setName(''); setDescription(''); setQuestion('');
     setType('Lost'); setImages([]); setPreviews([]);
+    if (fileRef.current) fileRef.current.value = '';
   };
 
   if (!open) return null;

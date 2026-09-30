@@ -48,12 +48,32 @@ export async function POST(request) {
     // STRICT ACCESS CONTROL: Force createdBy to be the authenticated user's ID
     const createdBy = authUser.userId;
 
-    const fallbackPictures =
-      type === 'Lost'
-        ? [{ img: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&auto=format&fit=crop&q=60' }]
-        : [{ img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=60' }];
+    // Process uploaded photos
+    const rawFiles = formData.getAll('itemPictures');
+    const itemPictures = [];
 
-    const itemPictures = fallbackPictures;
+    for (const file of rawFiles) {
+      if (file && typeof file === 'object' && typeof file.arrayBuffer === 'function' && file.size > 0) {
+        if (file.size <= 5 * 1024 * 1024) {
+          const bytes = await file.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+          const mimeType = file.type || 'image/jpeg';
+          const base64Data = `data:${mimeType};base64,${buffer.toString('base64')}`;
+          itemPictures.push({ img: base64Data });
+        }
+      } else if (typeof file === 'string' && file.trim()) {
+        itemPictures.push({ img: file.trim() });
+      }
+    }
+
+    // If no user pictures were uploaded, apply contextual fallback images
+    if (itemPictures.length === 0) {
+      const fallbackPictures =
+        type === 'Lost'
+          ? [{ img: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&auto=format&fit=crop&q=60' }]
+          : [{ img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=60' }];
+      itemPictures.push(...fallbackPictures);
+    }
 
     const conn = await connectToDatabase();
     if (conn) {

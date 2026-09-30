@@ -9,7 +9,7 @@ import { useAuth } from '@/lib/AuthContext';
 import api from '@/lib/api';
 import { useToast } from '@/components/Toast';
 import ConfirmDialog from '@/components/ConfirmDialog';
-import { formatRelativeTime } from '@/lib/utils';
+import { formatRelativeTime, getImageUrl } from '@/lib/utils';
 
 export default function ItemDetailPage() {
   const { id } = useParams();
@@ -163,11 +163,7 @@ export default function ItemDetailPage() {
               {item.itemPictures.map((pic, i) => (
                 <div key={i} className="h-80">
                   <img
-                    src={
-                      pic.img?.startsWith('http')
-                        ? pic.img
-                        : `https://lost-and-found-system.s3.amazonaws.com/${pic.img}`
-                    }
+                    src={getImageUrl(pic.img)}
                     alt={item.name}
                     className="w-full h-full object-contain bg-gray-50"
                   />

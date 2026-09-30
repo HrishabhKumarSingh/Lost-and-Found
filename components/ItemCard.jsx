@@ -2,22 +2,19 @@
 
 import Link from 'next/link';
 import { MapPin, Clock } from 'lucide-react';
-import { formatRelativeTime, truncateText } from '@/lib/utils';
+import { formatRelativeTime, truncateText, getImageUrl } from '@/lib/utils';
 
 export default function ItemCard({ item, showStatus = false }) {
   const isLost = item.type === 'Lost';
+  const firstPicture = item.itemPictures && item.itemPictures.length > 0 ? getImageUrl(item.itemPictures[0].img) : null;
 
   return (
     <Link href={`/item/${item._id}`}>
       <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer">
         <div className="relative h-48 overflow-hidden bg-gray-100">
-          {item.itemPictures && item.itemPictures.length > 0 ? (
+          {firstPicture ? (
             <img
-              src={
-                item.itemPictures[0].img?.startsWith('http')
-                  ? item.itemPictures[0].img
-                  : `https://lost-and-found-system.s3.amazonaws.com/${item.itemPictures[0].img}`
-              }
+              src={firstPicture}
               alt={item.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />

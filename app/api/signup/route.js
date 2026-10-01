@@ -66,13 +66,21 @@ export async function POST(request) {
         email,
         number: number || '+1 (555) 000-0000',
         password,
+        date: new Date(),
       });
 
       await newUser.save();
       return NextResponse.json('Done');
     }
 
-    // Fallback store
+    if (process.env.MONGODB_URI) {
+      return NextResponse.json(
+        { message: 'Database connection failed. Please ensure MongoDB Atlas allows connections from anywhere (0.0.0.0/0).' },
+        { status: 500 }
+      );
+    }
+
+    // Fallback store only for local dev when MONGODB_URI is not set
     const existing = dataStore.findUserByEmail(email);
     if (existing) {
       return NextResponse.json(
@@ -87,6 +95,7 @@ export async function POST(request) {
       email,
       number: number || '+1 (555) 000-0000',
       password,
+      date: new Date().toISOString(),
     });
 
     return NextResponse.json('Done');

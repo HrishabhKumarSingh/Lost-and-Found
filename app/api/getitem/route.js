@@ -27,22 +27,35 @@ export async function GET(request) {
         .limit(100)
         .lean();
 
-      if (items && items.length > 0) {
-        const sanitized = items.map((i) => ({
-          _id: String(i._id),
-          name: i.name,
-          description: i.description,
-          question: i.question,
-          type: i.type,
-          status: i.status,
-          itemPictures: i.itemPictures || [],
-          createdAt: i.createdAt,
-        }));
-        return NextResponse.json({ postitems: sanitized });
-      }
+      const sanitized = (items || []).map((i) => ({
+        _id: String(i._id),
+        name: i.name,
+        description: i.description,
+        question: i.question,
+        type: i.type,
+        status: i.status,
+        itemPictures: i.itemPictures || [],
+        createdAt: i.createdAt || i.date,
+        date: i.date || i.createdAt,
+      }));
+
+      return NextResponse.json({ postitems: sanitized });
+    }
+
+    if (process.env.MONGODB_URI) {
+      return NextResponse.json(
+        { message: 'Database connection failed. Please verify MONGODB_URI and Atlas network access.' },
+        { status: 500 }
+      );
     }
   } catch (err) {
     console.error('Secure getitem error:', err);
+    if (process.env.MONGODB_URI) {
+      return NextResponse.json(
+        { message: 'Database error fetching items.' },
+        { status: 500 }
+      );
+    }
   }
 
   const items = dataStore.getItems().filter((i) => i.status !== false);

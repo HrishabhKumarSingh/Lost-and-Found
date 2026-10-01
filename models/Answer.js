@@ -12,6 +12,7 @@ const AnswerSchema = new mongoose.Schema(
       enum: ['Moderation', 'Yes', 'No'],
       default: 'Moderation',
     },
+    date: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );

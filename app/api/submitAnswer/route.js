@@ -80,6 +80,7 @@ export async function POST(request) {
         givenBy: authUser.userId,
         belongsTo: String(itemDoc.createdBy),
         response: 'Moderation',
+        date: new Date(),
       });
 
       const sanitized = {
@@ -89,6 +90,13 @@ export async function POST(request) {
 
       dataStore.addAnswer(sanitized);
       return NextResponse.json({ message: 'Answer submitted successfully', answer: sanitized });
+    }
+
+    if (process.env.MONGODB_URI) {
+      return NextResponse.json(
+        { message: 'Database connection failed. Check MongoDB Atlas status.' },
+        { status: 500 }
+      );
     }
 
     // Fallback store
@@ -109,6 +117,7 @@ export async function POST(request) {
       answer,
       givenBy: authUser.userId,
       belongsTo: String(itemInMem.createdBy),
+      date: new Date().toISOString(),
     });
 
     return NextResponse.json({ message: 'Answer submitted successfully', answer: newAnswer });

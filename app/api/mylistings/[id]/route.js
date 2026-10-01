@@ -32,12 +32,25 @@ export async function GET(request, { params }) {
     const conn = await connectToDatabase();
     if (conn) {
       const items = await Item.find({ createdBy: String(id) }).sort({ createdAt: -1 }).lean();
-      if (items && items.length > 0) {
-        return NextResponse.json(items.map((i) => ({ ...i, _id: String(i._id) })));
-      }
+      return NextResponse.json((items || []).map((i) => ({
+        ...i,
+        _id: String(i._id),
+        date: i.date || i.createdAt,
+        createdAt: i.createdAt || i.date,
+      })));
+    }
+
+    if (process.env.MONGODB_URI) {
+      return NextResponse.json(
+        { message: 'Database connection failed. Check MongoDB Atlas status.' },
+        { status: 500 }
+      );
     }
   } catch (err) {
     console.error('Secure mylistings error:', err);
+    if (process.env.MONGODB_URI) {
+      return NextResponse.json({ message: 'Database error retrieving listings' }, { status: 500 });
+    }
   }
 
   const items = dataStore.getItems().filter((i) => i.createdBy === id);

@@ -22,7 +22,12 @@ export async function GET(request, { params }) {
       const item = await Item.findOne({ _id: id }).lean();
 
       if (item) {
-        const sanitizedItem = { ...item, _id: String(item._id) };
+        const sanitizedItem = {
+          ...item,
+          _id: String(item._id),
+          date: item.date || item.createdAt,
+          createdAt: item.createdAt || item.date,
+        };
         const isOwner = authUser && String(item.createdBy) === authUser.userId;
 
         let visibleAnswers = [];
@@ -31,14 +36,24 @@ export async function GET(request, { params }) {
           const answers = await Answer.find({ itemId: String(item._id) })
             .sort({ createdAt: -1 })
             .lean();
-          visibleAnswers = (answers || []).map((a) => ({ ...a, _id: String(a._id) }));
+          visibleAnswers = (answers || []).map((a) => ({
+            ...a,
+            _id: String(a._id),
+            date: a.date || a.createdAt,
+            createdAt: a.createdAt || a.date,
+          }));
         } else if (authUser) {
           // Claimant can only see their own submitted answer
           const ownAnswers = await Answer.find({
             itemId: String(item._id),
             givenBy: authUser.userId,
           }).lean();
-          visibleAnswers = (ownAnswers || []).map((a) => ({ ...a, _id: String(a._id) }));
+          visibleAnswers = (ownAnswers || []).map((a) => ({
+            ...a,
+            _id: String(a._id),
+            date: a.date || a.createdAt,
+            createdAt: a.createdAt || a.date,
+          }));
         }
 
         return NextResponse.json({

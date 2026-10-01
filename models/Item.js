@@ -9,6 +9,7 @@ const ItemSchema = new mongoose.Schema(
     status: { type: Boolean, default: true },
     createdBy: { type: String, required: true },
     itemPictures: [{ img: String }],
+    date: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );

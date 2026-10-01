@@ -85,6 +85,7 @@ export async function POST(request) {
         status: true,
         createdBy,
         itemPictures,
+        date: new Date(),
       });
 
       const sanitized = {
@@ -96,6 +97,13 @@ export async function POST(request) {
       return NextResponse.json({ message: 'Item created successfully', item: sanitized });
     }
 
+    if (process.env.MONGODB_URI) {
+      return NextResponse.json(
+        { message: 'Database connection failed. Please ensure Atlas allows connections (0.0.0.0/0).' },
+        { status: 500 }
+      );
+    }
+
     const newItem = dataStore.addItem({
       name,
       description,
@@ -103,11 +111,12 @@ export async function POST(request) {
       type,
       createdBy,
       itemPictures,
+      date: new Date().toISOString(),
     });
 
     return NextResponse.json({ message: 'Item created successfully', item: newItem });
   } catch (error) {
     console.error('Secure postitem error:', error);
-    return NextResponse.json({ message: 'Failed to create item' }, { status: 500 });
+    return NextResponse.json({ message: 'Failed to create item: ' + error.message }, { status: 500 });
   }
 }

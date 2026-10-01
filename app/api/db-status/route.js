@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
-import connectToDatabase from '@/lib/mongodb';
+import connectToDatabase, { getLastMongoError } from '@/lib/mongodb';
 import User from '@/models/User';
 import Item from '@/models/Item';
 import Answer from '@/models/Answer';
@@ -26,7 +26,8 @@ export async function GET() {
         connected: false,
         status: 'CONNECTION_FAILED',
         uri: maskedUri,
-        message: 'connectToDatabase returned null. Please verify Atlas Network Access allows 0.0.0.0/0.',
+        lastError: getLastMongoError(),
+        message: 'connectToDatabase returned null. Check lastError above.',
       });
     }
 
@@ -62,6 +63,7 @@ export async function GET() {
       uri: maskedUri,
       errorName: error.name,
       errorMessage: error.message,
+      lastError: getLastMongoError(),
       message: 'Failed to connect to MongoDB Atlas. Check your username, password, and IP whitelist (0.0.0.0/0).',
     }, { status: 500 });
   }

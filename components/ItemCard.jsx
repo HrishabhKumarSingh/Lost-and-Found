@@ -49,7 +49,7 @@ export default function ItemCard({ item, showStatus = false }) {
           </p>
           <div className="flex items-center text-gray-400 text-xs">
             <Clock className="w-3.5 h-3.5 mr-1" />
-            {formatRelativeTime(item.createdAt)}
+            {formatRelativeTime(item.createdAt || item.date)}
           </div>
         </div>
       </div>

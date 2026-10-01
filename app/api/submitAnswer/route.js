@@ -88,7 +88,6 @@ export async function POST(request) {
         _id: String(newAnswer._id),
       };
 
-      dataStore.addAnswer(sanitized);
       return NextResponse.json({ message: 'Answer submitted successfully', answer: sanitized });
     }
 

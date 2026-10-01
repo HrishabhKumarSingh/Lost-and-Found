@@ -23,7 +23,7 @@ export default function MyListingsPage() {
     async function fetchListings() {
       try {
         const res = await api.getMyListings(user._id);
-        setItems((res.data || []).reverse());
+        setItems(res.data || []);
       } catch (err) {
         console.error('Failed to fetch listings:', err);
       } finally {

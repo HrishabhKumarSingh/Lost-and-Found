@@ -84,7 +84,9 @@ export default function PostItemModal({ open, onClose }) {
       formData.append('description', description);
       formData.append('question', question);
       formData.append('type', type);
-      formData.append('createdBy', user?._id || 'user_demo_1');
+      if (user?._id) {
+        formData.append('createdBy', user._id);
+      }
       images.forEach((img) => formData.append('itemPictures', img));
 
       await api.postItem(formData, (progressEvent) => {

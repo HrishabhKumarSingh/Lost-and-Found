@@ -46,7 +46,6 @@ export async function POST(request, { params }) {
         answerDoc.response = rawResponse;
         await answerDoc.save();
 
-        dataStore.updateAnswerResponse(id, rawResponse);
         return NextResponse.json({
           message: 'Response updated successfully',
           answer: { ...answerDoc.toObject(), _id: String(answerDoc._id) },

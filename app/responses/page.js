@@ -77,7 +77,7 @@ export default function ResponsesPage() {
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <p className="text-sm text-gray-400">Item ID: {resp.itemId}</p>
-                  <p className="text-sm text-gray-500 mt-1">{formatRelativeTime(resp.createdAt)}</p>
+                  <p className="text-sm text-gray-500 mt-1">{formatRelativeTime(resp.createdAt || resp.date)}</p>
                 </div>
                 {statusBadge(resp.response)}
               </div>

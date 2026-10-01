@@ -190,7 +190,7 @@ export default function ItemDetailPage() {
 
           <h1 className="text-3xl font-bold text-gray-900 mb-3">{item.name}</h1>
           <p className="text-gray-600 leading-relaxed mb-6">{item.description}</p>
-          <p className="text-sm text-gray-400 mb-6">Posted {formatRelativeTime(item.createdAt)}</p>
+          <p className="text-sm text-gray-400 mb-6">Posted {formatRelativeTime(item.createdAt || item.date)}</p>
 
           {/* Owner actions */}
           {isOwner && (
@@ -229,7 +229,7 @@ export default function ItemDetailPage() {
                 {answers.map((a, i) => (
                   <div key={i} className="bg-gray-50 rounded-xl p-4 border border-gray-100">
                     <p className="text-sm text-gray-500 mb-1">Answer: <span className="text-gray-800 font-medium">{a.answer}</span></p>
-                    <p className="text-xs text-gray-400 mb-3">{formatRelativeTime(a.createdAt)}</p>
+                    <p className="text-xs text-gray-400 mb-3">{formatRelativeTime(a.createdAt || a.date)}</p>
                     {a.response === 'Moderation' ? (
                       <div className="flex gap-2">
                         <button onClick={() => handleModerate(a._id, 'Yes')} className="flex items-center gap-1 px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700">

@@ -48,7 +48,6 @@ export async function POST(request) {
         }
 
         const updated = await Item.findOneAndUpdate({ _id: id }, updates, { new: true }).lean();
-        dataStore.updateItem(id, updates);
 
         return NextResponse.json({
           message: 'Item updated successfully',

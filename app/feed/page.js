@@ -25,7 +25,7 @@ export default function FeedPage() {
     async function fetchItems() {
       try {
         const res = await api.getItems();
-        setItems((res.data.postitems || []).reverse());
+        setItems(res.data.postitems || []);
       } catch (err) {
         console.error('Failed to fetch items:', err);
       } finally {

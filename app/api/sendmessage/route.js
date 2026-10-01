@@ -43,9 +43,10 @@ export async function POST(request) {
     const conn = await connectToDatabase();
     if (conn) {
       await Message.create({ name, email, message });
+    } else {
+      dataStore.addMessage({ name, email, message });
     }
 
-    dataStore.addMessage({ name, email, message });
     return NextResponse.json({ message: 'Message received. We will get back to you soon!' });
   } catch (error) {
     console.error('Secure sendmessage error:', error);

@@ -93,7 +93,6 @@ export async function POST(request) {
         _id: String(newItem._id),
       };
 
-      dataStore.addItem(sanitized);
       return NextResponse.json({ message: 'Item created successfully', item: sanitized });
     }
 
@@ -117,6 +116,6 @@ export async function POST(request) {
     return NextResponse.json({ message: 'Item created successfully', item: newItem });
   } catch (error) {
     console.error('Secure postitem error:', error);
-    return NextResponse.json({ message: 'Failed to create item: ' + error.message }, { status: 500 });
+    return NextResponse.json({ message: 'Failed to create item' }, { status: 500 });
   }
 }

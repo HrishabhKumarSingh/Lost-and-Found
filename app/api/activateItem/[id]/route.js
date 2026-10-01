@@ -37,7 +37,6 @@ export async function POST(request, { params }) {
         item.status = true;
         await item.save();
 
-        dataStore.updateItem(id, { status: true });
         return NextResponse.json({
           message: 'Item reactivated successfully',
           item: { ...item.toObject(), _id: String(item._id) },

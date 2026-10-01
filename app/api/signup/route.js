@@ -102,7 +102,7 @@ export async function POST(request) {
   } catch (error) {
     console.error('Secure signup error:', error);
     return NextResponse.json(
-      { message: 'Registration failed. Please try again.' },
+      { message: 'Registration failed. Please try again.', debug: error.message, code: error.code },
       { status: 500 }
     );
   }

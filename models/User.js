@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import pkg from 'bcryptjs';
+const { genSaltSync, hashSync, compareSync } = pkg;
 
 const UserSchema = new mongoose.Schema(
   {
@@ -45,11 +46,11 @@ const UserSchema = new mongoose.Schema(
 );
 
 // Hash password before saving if modified
-UserSchema.pre('save', async function (next) {
+UserSchema.pre('save', function (next) {
   if (!this.isModified('password')) return next();
   try {
-    const salt = await bcrypt.genSalt(12);
-    this.password = await bcrypt.hash(this.password, salt);
+    const salt = genSaltSync(12);
+    this.password = hashSync(this.password, salt);
     next();
   } catch (err) {
     next(err);
@@ -57,13 +58,13 @@ UserSchema.pre('save', async function (next) {
 });
 
 // Instance method to compare password
-UserSchema.methods.comparePassword = async function (candidatePassword) {
+UserSchema.methods.comparePassword = function (candidatePassword) {
   if (!this.password) return false;
   // If the password is a bcrypt hash (starts with $2a$ or $2b$)
   if (this.password.startsWith('$2a$') || this.password.startsWith('$2b$')) {
-    return bcrypt.compare(candidatePassword, this.password);
+    return compareSync(candidatePassword, this.password);
   }
-  // Fallback for legacy plain text entries: compare directly and upgrade
+  // Fallback for legacy plain text entries
   return this.password === candidatePassword;
 };
 

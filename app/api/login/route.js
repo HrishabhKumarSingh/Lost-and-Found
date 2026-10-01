@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
+import pkg from 'bcryptjs';
+const { compareSync } = pkg;
 import connectToDatabase from '@/lib/mongodb';
 import User from '@/models/User';
 import { dataStore } from '@/lib/dataStore';
@@ -58,7 +59,7 @@ export async function POST(request) {
       const demoUser = dataStore.findUserByEmail(email);
       if (demoUser) {
         if (demoUser.password && (demoUser.password.startsWith('$2a$') || demoUser.password.startsWith('$2b$'))) {
-          isMatch = bcrypt.compareSync(password, demoUser.password);
+          isMatch = compareSync(password, demoUser.password);
         } else {
           isMatch = demoUser.password === password;
         }
